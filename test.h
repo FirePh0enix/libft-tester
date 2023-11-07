@@ -25,6 +25,25 @@
 #define _GLOBAL_FAIL_TEST test_GLOBAL
 
 /*
+	Memory leak detection
+*/
+
+extern size_t malloc_count;
+extern size_t free_count;
+
+void reset_memory_stats();
+
+#define CHECK_MEMORY_LEAK(NAME) \
+	do { \
+		if (malloc_count > free_count) { \
+			printf("💣 Memory leaks detected : %d malloc, %d free 💣\n", malloc_count, free_count); \
+		} else if (malloc_count < free_count) { \
+			printf("💣 Too many free : %d malloc, %d free 💣\n", malloc_count, free_count); \
+		} \
+		reset_memory_stats(); \
+	} while (0)
+
+/*
 	Start/End macro
 */
 

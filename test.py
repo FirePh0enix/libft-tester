@@ -60,7 +60,7 @@ subprocess.Popen([ "make" ]).wait()
 os.chdir(s)
 
 # Compile the test program
-args = [ "cc", ".main.c"]
+args = [ "cc", ".main.c", "tester.c" ]
 for test in tests:
 	args.append(test + ".c")
 args.extend([ "-o", "test", "-I..", "-L..", "-lbsd", "-lft" ])
