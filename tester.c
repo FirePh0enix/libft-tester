@@ -1,4 +1,4 @@
-#include <stddlib.h>
+#include <stdlib.h>
 
 extern void *__libc_malloc(size_t n);
 extern void __libc_free(void *p);
@@ -10,7 +10,7 @@ size_t free_count = 0;
 
 void *malloc(size_t n)
 {
-    void *ptr = __libc_malloc();
+    void *ptr = __libc_malloc(n);
     malloc_count += 1;
     return (ptr);
 }
