@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stddef.h>
 #include "libft.h"
 
 //#define STRINGIFY(s) _STRINGIFY(s)
