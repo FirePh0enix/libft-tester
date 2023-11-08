@@ -63,7 +63,9 @@ os.chdir(s)
 args = [ "cc", ".main.c", "tester.c" ]
 for test in tests:
 	args.append(test + ".c")
-args.extend([ "-o", "test", "-I..", "-L..", "-lbsd", "-lft" ])
+args.extend([ "../libft.a", "-o", "test", "-I..", "-lbsd" ])
+
+print(" ".join(args))
 
 if subprocess.Popen(args).wait() != 0:
 	print("Compilation failed!")

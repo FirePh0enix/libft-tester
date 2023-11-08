@@ -56,9 +56,9 @@ void reset_memory_stats();
 	do { \
 		printf("Testing ended "); \
 		if (_FAIL_TEST(NAME) == 0) { \
-			printf("%sall %d%s tests succeeded 🎉\n", GREEN_S, _OK_TEST(NAME), RESET); \
+			printf("%sall %d%s tests succeeded 🎉\n\n", GREEN_S, _OK_TEST(NAME), RESET); \
 		} else { \
-			printf("%s%d%s succeeded, %s%d%s failed 💣\n", GREEN_S, _OK_TEST(NAME), RESET, RED_S, _FAIL_TEST(NAME), RESET); \
+			printf("%s%d%s succeeded, %s%d%s failed 💣\n\n", GREEN_S, _OK_TEST(NAME), RESET, RED_S, _FAIL_TEST(NAME), RESET); \
 		} \
 	} while (0)
 
@@ -81,6 +81,36 @@ void reset_memory_stats();
 			_OK_TEST(NAME) += 1; \
 		} else { \
 			printf("%s (`%zu` (std) != `%zu` (ft))", FAIL, res_std, res_ft); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf(" `%s`\n", #FN); \
+	} while (0)
+
+#define TEST_RETURN_INT(NAME, FN) \
+	do { \
+		int res_std = (int) FN; \
+		int res_ft = (int) ft_ ## FN; \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if (res_std == res_ft) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (`%d` (std) != `%d` (ft))", FAIL, res_std, res_ft); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf(" `%s`\n", #FN); \
+	} while (0)
+
+#define TEST_RETURN_CMP(NAME, FN) \
+	do { \
+		int res_std = (int) FN; \
+		int res_ft = (int) ft_ ## FN; \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if ((res_std > 0 && res_ft > 0) || (res_std == 0 && res_ft == 0) || (res_std < 0 && res_ft < 0)) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (`%d` (std) != `%d` (ft))", FAIL, res_std, res_ft); \
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf(" `%s`\n", #FN); \
@@ -154,6 +184,22 @@ void reset_memory_stats();
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf(" `%s`\n", #FN); \
+	} while(0)
+
+/*
+	Compare the value returned by the function with a `memcmp`
+*/
+#define TEST_MEMCMP(NAME, ARRAY1, ARRAY2, SIZE) \
+	do { \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if (memcmp(ARRAY1, ARRAY2, SIZE) == 0) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s", FAIL); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf("\n"); \
 	} while(0)
 
 #endif

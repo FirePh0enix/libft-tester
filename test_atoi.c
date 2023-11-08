@@ -10,6 +10,8 @@ void test_atoi()
 	TEST_RETURN(atoi, atoi("2a"));
 	TEST_RETURN(atoi, atoi("--123"));
 	TEST_RETURN(atoi, atoi(""));
+	TEST_RETURN(atoi, atoi("2147483647"));
+	TEST_RETURN(atoi, atoi("-2147483648"));
 	//TEST_RETURN(atoi, atoi(NULL)); Segfault
 	END_TEST(atoi);
 }
