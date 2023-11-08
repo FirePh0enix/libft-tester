@@ -171,6 +171,58 @@ void reset_memory_stats();
 	} while(0)
 
 /*
+	Compare the value returned by the function with `REF` with a `strcmp` but doesn't call the
+	libc version of the function.
+*/
+#define TEST_RETURN_STRCMP_SINGLE(NAME, FN, REF) \
+	do { \
+		char * res = (char *) FN; \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if (strcmp(res, REF) == 0) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (`%s` (ft) != `%s` (ref))", FAIL, res, REF); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf(" `%s`\n", #FN); \
+	} while(0)
+
+/*
+	Compare the value returned by the function with `REF` with a `strcmp` but doesn't call the
+	libc version of the function.
+	REF is a string array (`char **`). This test check all elements of the table with strcmp.
+*/
+#define TEST_RETURN_STRCMP_ARRAY(NAME, FN, REF, SIZE) \
+	do { \
+		char **res = (char **) FN; \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		int i; \
+		for (i = 0; i < SIZE; i++) \
+			if (strcmp(res[i], REF[i]) != 0) \
+				break; \
+		if (i == SIZE) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (output = [ ", FAIL); \
+			for (int i = 0; i < SIZE; i++) { \
+				printf("%s", res[i]); \
+				if (i < SIZE - 1) \
+					printf(", "); \
+			} \
+			printf(" ], expected = ["); \
+			for (int i = 0; i < SIZE; i++) { \
+				printf("%s", REF[i]); \
+				if (i < SIZE - 1) \
+					printf(", "); \
+			} \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf(" `%s`\n", #FN); \
+	} while(0)
+
+/*
 	Compare the value returned by the function with a `memcmp`
 */
 #define TEST_RETURN_MEMCMP(NAME, FN, ARRAY, SIZE) \
