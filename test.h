@@ -211,12 +211,13 @@ void reset_memory_stats();
 				if (i < SIZE - 1) \
 					printf(", "); \
 			} \
-			printf(" ], expected = ["); \
+			printf(" ], expected = [ "); \
 			for (int i = 0; i < SIZE; i++) { \
 				printf("%s", REF[i]); \
 				if (i < SIZE - 1) \
 					printf(", "); \
 			} \
+			printf(" ]"); \
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf(" `%s`\n", #FN); \

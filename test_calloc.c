@@ -9,6 +9,9 @@ void test_calloc()
 	TEST_RETURN_NOT_NULL(calloc, calloc(1, 8));
 	TEST_RETURN_NOT_NULL(calloc, calloc(0, 8));
 	TEST_RETURN(calloc, calloc(-5, -5));
+	TEST_RETURN_NOT_NULL(calloc, calloc(0, -5));
+	TEST_RETURN_NOT_NULL(calloc, calloc(-5, 0));
+	TEST_RETURN_NOT_NULL(calloc, calloc(0, 0));
 
 	char tab[20];
 	memset(tab, 0, 20);
