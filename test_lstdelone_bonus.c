@@ -1,7 +1,8 @@
 #include "libft.h"
 #include "test.h"
+#include "libft_bonus.h"
 
-void test_lstdelone()
+void test_lstdelone_bonus()
 {
 	START_TEST(lstdelone);
 

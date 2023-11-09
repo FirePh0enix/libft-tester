@@ -1,7 +1,8 @@
 #include "libft.h"
 #include "test.h"
+#include "libft_bonus.h"
 
-void test_lstadd_front()
+void test_lstadd_front_bonus()
 {
 	START_TEST(lstadd_front);
 

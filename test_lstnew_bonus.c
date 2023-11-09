@@ -1,7 +1,8 @@
 #include "test.h"
+#include "libft_bonus.h"
 #include <string.h>
 
-void test_lstnew()
+void test_lstnew_bonus()
 {
 	START_TEST(lstnew);
 

@@ -1,6 +1,7 @@
 #include "test.h"
+#include "libft_bonus.h"
 
-void test_lstclear()
+void test_lstclear_bonus()
 {
 	START_TEST(lstclear);
 
