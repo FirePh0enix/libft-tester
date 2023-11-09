@@ -11,6 +11,7 @@
 
 #define RED_S "\033[1;31m"
 #define GREEN_S "\033[1;32m"
+#define MAGENTA_S "\033[1;35m"
 #define RESET "\033[0m"
 
 #define SUCCESS GREEN_S "SUCCESS" RESET
@@ -18,6 +19,7 @@
 
 #define RED(s) RED_S s RESET
 #define GREEN(s) GREEN_S s RESET
+#define MAGENTA(s) MAGENTA_S s RESET
 
 #define _OK_TEST(NAME) test_ ## NAME ## _OK
 #define _FAIL_TEST(NAME) test_ ## NAME ## _FAIL
@@ -33,25 +35,30 @@ extern size_t malloc_count;
 extern size_t free_count;
 
 void reset_memory_stats();
+void enable_malloc();
+void disable_malloc();
 
 #define CHECK_MEMORY_LEAK(NAME) \
 	do { \
 		if (malloc_count > free_count) { \
-			printf("💣 Memory leaks detected : %d malloc, %d free 💣\n", malloc_count, free_count); \
+			printf(RED_S "💣 Memory leaks detected : %zu malloc, %zu free 💣\n" RESET, malloc_count, free_count); \
 		} else if (malloc_count < free_count) { \
-			printf("💣 Too many free : %d malloc, %d free 💣\n", malloc_count, free_count); \
+			printf(RED_S "💣 Too many free : %zu malloc, %zu free 💣\n" RESET, malloc_count, free_count); \
 		} \
 		reset_memory_stats(); \
 	} while (0)
+
+void sigsegv();
 
 /*
 	Start/End macro
 */
 
 #define START_TEST(NAME) \
-	printf("Testing '%s'\n", #NAME); \
+	printf("Testing '%s'\n", MAGENTA(#NAME)); \
 	static int _OK_TEST(NAME) = 0; \
 	static int _FAIL_TEST(NAME) = 0; \
+	reset_memory_stats();
 
 #define END_TEST(NAME) \
 	do { \
@@ -189,6 +196,23 @@ void reset_memory_stats();
 	} while(0)
 
 /*
+	Compare the value returned by the function with `REF`.
+*/
+#define TEST_RETURN_EQ(NAME, FN, REF) \
+	do { \
+		unsigned long res = (unsigned long) FN; \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if (res == (unsigned long)REF) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (`%zu` (ft) != `%zu` (ref))", FAIL, res, (unsigned long) REF); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf(" `%s`\n", #FN); \
+	} while(0)
+
+/*
 	Compare the value returned by the function with `REF` with a `strcmp` but doesn't call the
 	libc version of the function.
 	REF is a string array (`char **`). This test check all elements of the table with strcmp.
@@ -241,7 +265,7 @@ void reset_memory_stats();
 	} while(0)
 
 /*
-	Compare the value returned by the function with a `memcmp`
+	Compare the two array with `memcmp`
 */
 #define TEST_MEMCMP(NAME, ARRAY1, ARRAY2, SIZE) \
 	do { \
@@ -251,6 +275,22 @@ void reset_memory_stats();
 			_OK_TEST(NAME) += 1; \
 		} else { \
 			printf("%s", FAIL); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf("\n"); \
+	} while(0)
+
+/*
+	Check if the two values are equals.
+*/
+#define TEST_EQ(NAME, VALUE1, VALUE2) \
+	do { \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if (VALUE1 == VALUE2) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (`%p` != `%p`)", FAIL, VALUE1, VALUE2); \
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf("\n"); \
