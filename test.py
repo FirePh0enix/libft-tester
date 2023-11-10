@@ -36,18 +36,26 @@ else:
 tests = []
 filenames = []
 
-for filename in os.listdir(source_dir):
-	s = os.path.basename(filename)
-	if not s.endswith(".c"):
-		continue
-	ft_name = s[:len(s) - 2]
-	name = ft_name[3:]
+if len(sys.argv) == 1:
+	for filename in os.listdir(source_dir):
+		s = os.path.basename(filename)
+		if not s.endswith(".c"):
+			continue
+		ft_name = s[:len(s) - 2]
+		name = ft_name[3:]
 
+		test_name = "test_" + name
+
+		# Check if a test exists for a given file
+		if os.path.exists(test_name + ".c"):
+			tests.append(test_name)
+		filenames.append(name)
+else:
+	ft_name = sys.argv[1]
+	name = ft_name[3:]
 	test_name = "test_" + name
 
-	# Check if a test exists for a given file
-	if os.path.exists(test_name + ".c"):
-		tests.append(test_name)
+	tests.append(test_name)
 	filenames.append(name)
 
 # Compile libft.a
@@ -73,8 +81,3 @@ subprocess.Popen([ "./test" ]).wait()
 
 # Some stats
 print("Test coverage: {}/{} files".format(len(tests), len(filenames)))
-
-print("Files not covered in tests:")
-for filename in filenames:
-	if "test_" + filename not in tests:
-		print(filename)
