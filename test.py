@@ -38,7 +38,7 @@ filenames = []
 
 for filename in os.listdir(source_dir):
 	s = os.path.basename(filename)
-	if s.endswith(".o"):
+	if not s.endswith(".c"):
 		continue
 	ft_name = s[:len(s) - 2]
 	name = ft_name[3:]
@@ -64,7 +64,7 @@ with open(".main.c", "w") as fd:
 args = [ "cc", ".main.c", "tester.c", "tester-segfault.c" ]
 for test in tests:
 	args.append(test + ".c")
-args.extend([ "../libft.a", "-o", "test", "-I..", "-lbsd" ])
+args.extend([ "../libft.a", "-o", "test", "-I..", "-lbsd", "-g3" ])
 
 if subprocess.Popen(args).wait() != 0:
 	print("Compilation failed!")
@@ -73,3 +73,8 @@ subprocess.Popen([ "./test" ]).wait()
 
 # Some stats
 print("Test coverage: {}/{} files".format(len(tests), len(filenames)))
+
+print("Files not covered in tests:")
+for filename in filenames:
+	if "test_" + filename not in tests:
+		print(filename)

@@ -5,7 +5,7 @@
 void test_strlen()
 {
 	START_TEST(strlen);
-	TEST_RETURN(strlen, strlen("Hello world!"));
-	TEST_RETURN(strlen, strlen("0"));
+	TEST_RETURN(strlen, strlen("Hello world!"), "");
+	TEST_RETURN(strlen, strlen(""), "");
 	END_TEST(strlen);
 }

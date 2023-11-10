@@ -79,7 +79,7 @@ void sigsegv();
 /*
 	Test the return value of the function
 */
-#define TEST_RETURN(NAME, FN) \
+#define TEST_RETURN(NAME, FN, MSG) \
 	do { \
 		unsigned long res_std = (unsigned long) FN; \
 		unsigned long res_ft = (unsigned long) ft_ ## FN; \
@@ -88,7 +88,7 @@ void sigsegv();
 			printf("%s", SUCCESS); \
 			_OK_TEST(NAME) += 1; \
 		} else { \
-			printf("%s (`%zu` (std) != `%zu` (ft))", FAIL, res_std, res_ft); \
+			printf("%s (`%zu` (std) != `%zu` (ft)): '%s'", FAIL, res_std, res_ft, MSG); \
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf(" `%s`\n", #FN); \
@@ -269,12 +269,14 @@ void sigsegv();
 */
 #define TEST_MEMCMP(NAME, ARRAY1, ARRAY2, SIZE) \
 	do { \
+		const char *array1 = ARRAY1; \
+		const char *array2 = ARRAY2; \
 		printf("Test %d ", TEST_INDEX(NAME)); \
-		if (memcmp(ARRAY1, ARRAY2, SIZE) == 0) { \
+		if (memcmp(array1, array2, SIZE) == 0) { \
 			printf("%s", SUCCESS); \
 			_OK_TEST(NAME) += 1; \
 		} else { \
-			printf("%s", FAIL); \
+			printf("%s (`%s` != `%s`)", FAIL, array1, array2); \
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf("\n"); \
@@ -291,6 +293,22 @@ void sigsegv();
 			_OK_TEST(NAME) += 1; \
 		} else { \
 			printf("%s (`%p` != `%p`)", FAIL, VALUE1, VALUE2); \
+			_FAIL_TEST(NAME) += 1; \
+		} \
+		printf("\n"); \
+	} while(0)
+
+/*
+	Check if the two values are equals.
+*/
+#define TEST_EQ_INT(NAME, VALUE1, VALUE2) \
+	do { \
+		printf("Test %d ", TEST_INDEX(NAME)); \
+		if (VALUE1 == VALUE2) { \
+			printf("%s", SUCCESS); \
+			_OK_TEST(NAME) += 1; \
+		} else { \
+			printf("%s (`%d` != `%d`)", FAIL, VALUE1, VALUE2); \
 			_FAIL_TEST(NAME) += 1; \
 		} \
 		printf("\n"); \
