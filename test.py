@@ -49,6 +49,8 @@ if len(sys.argv) == 1:
 		# Check if a test exists for a given file
 		if os.path.exists(test_name + ".c"):
 			tests.append(test_name)
+		elif os.path.exists(test_name + "_bonus.c"):
+			tests.append(test_name + "_bonus")
 		filenames.append(name)
 else:
 	ft_name = sys.argv[1]
