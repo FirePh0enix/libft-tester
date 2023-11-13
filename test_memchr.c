@@ -6,6 +6,8 @@ void test_memchr()
 {
 	START_TEST(memchr);
 	TEST_RETURN_STRCMP(memchr, memchr("Hello world!", 'w', 13));
+	TEST_RETURN_STRCMP(memchr, memchr("Hello world!", 'w', 0));
+	TEST_RETURN_STRCMP(memchr, memchr("Hello world!", 'w', 100));
 	TEST_RETURN_STRCMP(memchr, memchr("Hello world!", 'z', 13));
 	TEST_RETURN_STRCMP(memchr, memchr("Hello world!", '\0', 13));
 	TEST_RETURN_STRCMP(memchr, memchr("", 'w', 0));

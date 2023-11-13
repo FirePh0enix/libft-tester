@@ -17,5 +17,9 @@ void test_striteri()
 	ft_striteri(s, to_upper);
 	TEST_RETURN_STRCMP_SINGLE(striteri, s, "HELLO WORLD");
 
+	char test1[] = "hello world";
+	ft_striteri(NULL, to_upper);
+	TEST_RETURN_STRCMP_SINGLE(striteri, test1, "hello world");
+
 	END_TEST(striteri);
 }
