@@ -10,5 +10,8 @@ void test_strncmp()
 	TEST_RETURN_CMP(strncmp, strncmp("Hello world", "Hello", 5));
 	TEST_RETURN_CMP(strncmp, strncmp("Hello world", "", 0));
 	TEST_RETURN_CMP(strncmp, strncmp("Hello world", "something else", 11));
+
+	// Test if the function is using `unsigned char`
+	TEST_RETURN_CMP(strncmp, strncmp("\xff", "\x1", 1));
 	END_TEST(strncmp);
 }

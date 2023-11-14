@@ -63,7 +63,8 @@ else:
 # Compile libft.a
 s = os.getcwd()
 os.chdir("..")
-subprocess.Popen([ "make" ]).wait()
+if subprocess.Popen([ "make" ]).wait() != 0:
+	print("Failed to compile libft!")
 os.chdir(s)
 
 # Write `.main.c`
