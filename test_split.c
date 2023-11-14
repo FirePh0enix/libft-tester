@@ -30,7 +30,6 @@ void test_split()
 	char *table8[] = {"7", "5", "4", "2"};
 	TEST_RETURN_STRCMP_ARRAY(split, ft_split("7+++5++4++++++++++++++2", '+'), table8, 4);
 
-	char *table9 = NULL;
-	TEST_RETURN_STRCMP_ARRAY(split, ft_split(NULL, '+'), table9, 0);
+	TEST_RETURN_EQ(split, ft_split(NULL, '+'), NULL, 0);
 	END_TEST(split);
 }
